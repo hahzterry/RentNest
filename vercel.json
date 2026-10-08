@@ -1,3 +1,14 @@
 {
-  "rootDirectory": "RentNest Frontend"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "rentnestbackend": {
+      "root": "RentNest Backend",
+      "framework": "express"
+    },
+    "rentnestfrontend": {
+      "root": "RentNest Frontend",
+      "framework": "nextjs"
+    }
+  },
+  "rewrites": []
 }
