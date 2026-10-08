@@ -14,8 +14,17 @@ import {
   PlatformStats,
 } from "./types";
 
-export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5050/api";
+const LIVE_API_URL = "https://rentnest-api.vercel.app/api";
+
+const resolveApiUrl = (): string => {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
+  if (!envUrl || envUrl.includes("rentnest-fullstack-production.up.railway.app")) {
+    return LIVE_API_URL;
+  }
+  return envUrl;
+};
+
+export const API_URL = resolveApiUrl();
 
 export const TOKEN_KEY = "rn_token";
 export const USER_KEY = "rn_user";
@@ -74,10 +83,26 @@ async function request<T>(
       cache: "no-store",
     });
   } catch {
-    throw new ApiError(
-      "Network error. Please check your connection and try again.",
-      0
-    );
+    // If request fails and API_URL was not LIVE_API_URL, retry once against live backend
+    if (API_URL !== LIVE_API_URL) {
+      try {
+        res = await fetch(`${LIVE_API_URL}${path}`, {
+          ...options,
+          headers: { ...headers, ...(options.headers as Record<string, string>) },
+          cache: "no-store",
+        });
+      } catch {
+        throw new ApiError(
+          "Network error. Please check your connection and try again.",
+          0
+        );
+      }
+    } else {
+      throw new ApiError(
+        "Network error. Please check your connection and try again.",
+        0
+      );
+    }
   }
 
   let json: ApiResponse<T>;

@@ -322,4 +322,4 @@ Default Password for all test accounts: **`Password123!`**
 
 Developed with ❤️ for **RentNest Full Stack Platform**.
 - **Live App:** [https://rent-nest-front-end.vercel.app/](https://rent-nest-front-end.vercel.app/)
-- **API Endpoint:** [https://rentnest-fullstack-production.up.railway.app](https://rentnest-fullstack-production.up.railway.app)
+- **API Endpoint:** [https://rentnest-api.vercel.app](https://rentnest-api.vercel.app)
